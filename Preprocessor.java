@@ -1,8 +1,9 @@
 import java.util.*;
 
 public class Preprocessor {
-    private static final Set<String> STOPWORDS = new HashSet<>(Arrays.asList(
-            "a", "an", "the", "and", "or", "but", "if", "in", "on", "with", "as", "by", "for"
+        private static final Set<String> STOPWORDS = new HashSet<>(Arrays.asList(
+        "a", "an", "the", "and", "or", "but", "if", "in", "on", "with", 
+        "as", "by", "for", "of", "to", "at", "be", "is", "are", "was", "were"
     ));
 
     public static List<String> preprocess(String text) {
@@ -20,65 +21,65 @@ public class Preprocessor {
         return processedTokens;
     }
 
-    private static String stem(String word) {
-        // Apply a simplified version of the Porter Stemming Algorithm
-        if (word.length() <= 2) {
-            return word; // No stemming for very short words
-        }
+    public static String stem(String word) {
+        if (word.length() < 3) return word;
 
-        // Step 1a: Remove plurals and -ed or -ing suffixes
+        // Step 1a: Plural and past tense endings
         if (word.endsWith("sses")) {
-            word = word.substring(0, word.length() - 2); // Replace "sses" with "ss"
+            word = word.substring(0, word.length() - 2);
         } else if (word.endsWith("ies")) {
-            word = word.substring(0, word.length() - 2); // Replace "ies" with "i"
+            word = word.substring(0, word.length() - 2);
         } else if (word.endsWith("ss")) {
-            // Do nothing (keep "ss")
+            // No change
         } else if (word.endsWith("s")) {
-            word = word.substring(0, word.length() - 1); // Remove "s"
+            word = word.substring(0, word.length() - 1);
         }
 
-        // Step 1b: Remove -ed and -ing suffixes
+        // Step 1b: -ed and -ing suffixes
         if (word.endsWith("eed")) {
-            // Do nothing (keep "eed")
-        } else if (word.endsWith("ed")) {
-            word = word.substring(0, word.length() - 2); // Remove "ed"
-        } else if (word.endsWith("ing")) {
-            word = word.substring(0, word.length() - 3); // Remove "ing"
+            if (measure(word.substring(0, word.length() - 3)) > 0) {
+                word = word.substring(0, word.length() - 1);
+            }
+        } else if (word.endsWith("ed") && containsVowel(word.substring(0, word.length() - 2))) {
+            word = word.substring(0, word.length() - 2);
+        } else if (word.endsWith("ing") && containsVowel(word.substring(0, word.length() - 3))) {
+            word = word.substring(0, word.length() - 3);
         }
 
-        // Step 2: Remove common suffixes
-        if (word.endsWith("ational")) {
-            word = word.substring(0, word.length() - 5) + "e"; // Replace "ational" with "ate"
-        } else if (word.endsWith("tional")) {
-            word = word.substring(0, word.length() - 2); // Replace "tional" with "tion"
-        } else if (word.endsWith("izer")) {
-            word = word.substring(0, word.length() - 1); // Replace "izer" with "ize"
-        }
-
-        // Step 3: Remove -al, -ence, etc.
-        if (word.endsWith("al")) {
-            word = word.substring(0, word.length() - 2); // Remove "al"
-        } else if (word.endsWith("ence")) {
-            word = word.substring(0, word.length() - 4); // Remove "ence"
-        }
-
-        // Step 4: Remove -ity, -able, etc.
-        if (word.endsWith("ity")) {
-            word = word.substring(0, word.length() - 3); // Remove "ity"
-        } else if (word.endsWith("able")) {
-            word = word.substring(0, word.length() - 4); // Remove "able"
-        }
-
-        // Step 5: Remove -ant, -ence, etc.
-        if (word.endsWith("ant")) {
-            word = word.substring(0, word.length() - 3); // Remove "ant"
-        }
-
-        // Step 6: Remove final 'e' if necessary
-        if (word.length() > 1 && word.endsWith("e")) {
-            word = word.substring(0, word.length() - 1); // Remove final "e"
+        // Step 1c: Replace "y" with "i" if preceded by a vowel
+        if (word.endsWith("y") && containsVowel(word.substring(0, word.length() - 1))) {
+            word = word.substring(0, word.length() - 1) + "i";
         }
 
         return word;
+    }
+
+    // Measures the number of vowel-consonant sequences (m)
+    private static int measure(String word) {
+        int count = 0;
+        boolean vowelSeen = false;
+        
+        for (int i = 0; i < word.length(); i++) {
+            if (isVowel(word.charAt(i))) {
+                vowelSeen = true;
+            } else if (vowelSeen) {
+                count++;
+                vowelSeen = false;
+            }
+        }
+        return count;
+    }
+
+    // Checks if a string contains a vowel
+    private static boolean containsVowel(String word) {
+        for (char c : word.toCharArray()) {
+            if (isVowel(c)) return true;
+        }
+        return false;
+    }
+
+    // Checks if a character is a vowel
+    private static boolean isVowel(char c) {
+        return "aeiou".indexOf(c) != -1;
     }
 }

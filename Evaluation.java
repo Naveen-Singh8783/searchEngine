@@ -8,6 +8,7 @@ public class Evaluation {
         try (FileWriter writer = new FileWriter(outputPath, true)) { // Append mode
             int rank = 1; // Start ranking from 1
             for (int docId : rankedDocs) {
+                //if(rank > 100) break; // Limit output to top 100 documents
                 // Generate the line in trec_eval format
                 String line = String.format(
                         "%s 0 %d %d %.4f %s_run\n", // Format: query_id iter document_id rank similarity run_id
@@ -23,6 +24,7 @@ public class Evaluation {
 
                 // Increment the rank for the next document
                 rank++;
+                if(rank > 100)break;
             }
             System.out.println("Results appended to output file: " + outputPath);
         } catch (IOException e) {
