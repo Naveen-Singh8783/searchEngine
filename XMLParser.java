@@ -29,7 +29,7 @@ public class XMLParser {
                     int id = Integer.parseInt(element.getElementsByTagName("docno").item(0).getTextContent());
                     String title = element.getElementsByTagName("title").item(0).getTextContent();
                     String author = element.getElementsByTagName("author").item(0).getTextContent();
-                    String bib = element.getElementsByTagName("bib").item(0).getTextContent();
+                    //String bib = element.getElementsByTagName("bib").item(0).getTextContent();
                     String body = element.getElementsByTagName("text").item(0).getTextContent();
 
                     documents.add(new Document(id, title, author, body));

@@ -24,7 +24,7 @@ public class Evaluation {
 
                 // Increment the rank for the next document
                 rank++;
-                if(rank > 100)break;
+                //if(rank > 100)break;
             }
             System.out.println("Results appended to output file: " + outputPath);
         } catch (IOException e) {

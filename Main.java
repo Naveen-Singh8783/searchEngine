@@ -10,13 +10,13 @@ public class Main {
         List<Document> documents = XMLParser.parseDocuments(documentsFilePath);
         List<Query> queries = XMLParser.parseQueries(queriesFilePath);
 
-// //         // Example: Debug tokens for the first document and query
-// Document doc = documents.get(0);
-// Query query = queries.get(0);
-// List<String> docTokens = Preprocessor.preprocess(doc.getBody());
-// List<String> queryTokens = Preprocessor.preprocess(query.getText());
-// System.out.println("Doc Tokens: " + docTokens);
-// System.out.println("Query Tokens: " + queryTokens);
+       // Example: Debug tokens for the first document and query
+        // Document doc = documents.get(0);
+        // Query query = queries.get(0);
+        // List<String> docTokens = Preprocessor.preprocess(doc.getBody());
+        // List<String> queryTokens = Preprocessor.preprocess(query.getText());
+        // System.out.println("Doc Tokens: " + docTokens);
+        // System.out.println("Query Tokens: " + queryTokens);
 
         // Build the inverted index
         InvertedIndex index = new InvertedIndex();
@@ -44,11 +44,9 @@ public class Main {
             Map<Integer, Double> scoresLM = searchEngine.computeScores(queryTokens, resultsLM, "LM");
 
             // Generate output files for trec_eval
-            if(query.getId() <= 225){
-                Evaluation.generateOutputFile(resultsVSM, String.valueOf(query.getId()), "VSM", scoresVSM, "vsm_results.txt");
-                Evaluation.generateOutputFile(resultsBM25, String.valueOf(query.getId()), "BM25", scoresBM25, "bm25_results.txt");
-                Evaluation.generateOutputFile(resultsLM, String.valueOf(query.getId()), "LM", scoresLM, "lm_results.txt");
-            }
+            Evaluation.generateOutputFile(resultsVSM, String.valueOf(query.getId()), "VSM", scoresVSM, "vsm_results.txt");
+            Evaluation.generateOutputFile(resultsBM25, String.valueOf(query.getId()), "BM25", scoresBM25, "bm25_results.txt");
+            Evaluation.generateOutputFile(resultsLM, String.valueOf(query.getId()), "LM", scoresLM, "lm_results.txt");
             
         }
 
