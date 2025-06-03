@@ -19,30 +19,6 @@ The system is developed and tested on the **Cranfield dataset**, a standard benc
 - Ranking models: VSM, BM25, LM
 - Evaluation using standard IR metrics
 
-## Project Structure
-
-```
-.
-├── data/
-│   ├── cran.all.1400.xml         # Document dataset
-│   ├── cran.qry.xml              # Query dataset
-│   └── cranqrel                  # Relevance judgments
-├── src/
-│   ├── XMLParser.java            # Parses documents and queries
-│   ├── InvertedIndex.java        # Builds and manages inverted index
-│   ├── SearchEngine.java         # Core search engine logic
-│   ├── VectorSpaceModel.java     # VSM ranking logic
-│   ├── BM25.java                 # BM25 ranking logic
-│   └── LanguageModel.java        # Language model with Dirichlet smoothing
-├── results/
-│   ├── vsm_results.txt
-│   ├── bm25_results.txt
-│   └── lm_results.txt
-├── trec_eval/                    # Directory containing trec_eval tool
-├── README.md                     # Project documentation
-└── ...
-```
-
 ## Setup Instructions
 
 1. **Clone the repository:**
